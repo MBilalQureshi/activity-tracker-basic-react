@@ -1,17 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import css from '../styles/AddTask.module.css'
 import GenerateTask from './GenerateTask'
 
 function AddTask() {
     const [name, setName] = useState('')
     const [task, setTask] = useState([])
+    const [days, setDays] = useState(null)
+
+    function getDaysInCurrentMonth() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        return daysInMonth;
+      }
+
+    useEffect(() => {
+        setDays(getDaysInCurrentMonth())
+    },[])
+
+    const removeTask = (idx) => {
+        setTask(task.filter((_, index) => { return index !== idx; }));
+    }
 
     const handleSubmit = (e) =>{
         e.preventDefault()
-        console.log(name)
-        console.log(task)
-        if(name){
+        // console.log(name)
+        if(name !== ''){
             setTask([...task, name])
+            // console.log(task)
             setName('')
           }
     }
@@ -28,8 +45,8 @@ function AddTask() {
                 />
                 <button type='submit'>Add Task</button>
                 {
-                    task.map(name => {
-                        return <GenerateTask key={name} name={name} />
+                    task.map((name, index)=> {
+                        return <GenerateTask key={index} name={name} days={days} index={index} removeTask={removeTask}/>
                     })
                 }
             </div>
