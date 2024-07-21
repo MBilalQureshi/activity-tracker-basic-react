@@ -1,0 +1,8 @@
+.AddTask h2{
+    margin-top: 20px;
+    color: #3e8ed0;
+}
+.AddTask button{
+    background-color: #00d1b2;
+    color: white;
+}
